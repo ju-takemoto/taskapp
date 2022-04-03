@@ -9,7 +9,7 @@ import UIKit
 import RealmSwift   // ←追加
 import UserNotifications    // 追加
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UISearchBarDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var categorySearchBar: UISearchBar!
@@ -30,7 +30,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.fillerRowHeight = UITableView.automaticDimension
         tableView.delegate = self
         tableView.dataSource = self
-        
+        categorySearchBar.delegate = self
         categorySearchBar.enablesReturnKeyAutomatically = false
         categorySearchBar.enablesReturnKeyAutomatically = true
 
@@ -124,9 +124,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.reloadData()
     }
 
-    func categorySearchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         categorySearchBar.endEditing(true)
-        guard categorySearchBar.text != nil else {return
+        guard categorySearchBar.text != nil else {return}
         
         let result = realm.objects(Task.self).filter("category BEGINSWITH '\(searchText)'")
         
@@ -139,7 +139,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
 
         tableView.reloadData()
-        }
+        
     }
 }
 
